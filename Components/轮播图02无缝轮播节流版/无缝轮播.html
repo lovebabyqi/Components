@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无缝轮播</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            margin: 50px auto;
+            position: relative;
+            width: 800px;
+            height: 350px;
+        }
+
+        .swiperList {
+            position: relative;
+            transition: all 1s;
+            left: 0;
+            width: 800px;
+            height: 350px;
+            /* overflow: hidden; */
+            list-style: none;
+        }
+
+        .item {
+            position: absolute;
+            width: 800px;
+            height: 350px;
+            font-size: 50px;
+            line-height: 350px;
+            text-align: center;
+        }
+
+        .item:nth-child(1) {
+            left: -800px;
+            background-color: rgb(31, 105, 74);
+        }
+
+        .item:nth-child(2) {
+            left: 0;
+            background-color: rgb(138, 125, 70);
+        }
+
+        .item:nth-child(3) {
+            left: 800px;
+            background-color: rgb(128, 56, 89);
+        }
+
+        .item:nth-child(4) {
+            left: 1600px;
+            background-color: rgb(196, 115, 126);
+        }
+
+        .item:nth-child(5) {
+            left: 2400px;
+            background-color: rgb(30, 110, 134);
+        }
+
+        .item:nth-child(6) {
+            left: 3200px;
+            background-color: rgb(31, 105, 74);
+        }
+
+        .item:nth-child(7) {
+            left: 4000px;
+            background-color: rgb(138, 125, 70);
+        }
+
+        .btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        #pre {
+            left: 0;
+        }
+
+        #next {
+            right: 0;
+        }
+        .pointList{
+            position:absolute;
+            bottom:10px;
+            left:50%;
+            transform: translateX(-50%);
+            list-style: none;
+            width:100px;
+            height:20px;
+        }
+        img{
+            width: 800px;
+            height: 350px;
+        }
+        .point{
+            float:left;
+            margin:5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            background-color: rgba(0,0,0,0.3);
+        }
+        .point.active{
+            background-color: red;
+            position:absolute;
+            left:0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="swiper">
+        <ul class="swiperList">
+            <li class="item"><img src="./images/05.jpg"></li>
+            <li class="item"><img src="./images/01.jpg"></li>
+            <li class="item"><img src="./images/02.jpg"></li>
+            <li class="item"><img src="./images/03.jpg"></li>
+            <li class="item"><img src="./images/04.jpg"></li>
+            <li class="item"><img src="./images/05.jpg"></li>
+            <li class="item"><img src="./images/01.jpg"></li>
+        </ul>
+        <ul class="pointList">
+            <li class="point active"></li>
+            <li class="point"></li>
+            <li class="point"></li>
+            <li class="point"></li>
+            <li class="point"></li>
+            <li class="point"></li>
+        </ul>
+        <button type="button" class='btn' id='pre'>
+            < </button>
+                <button type="button" class='btn' id='next'>></button>
+    </div>
+    <script>
+        const oUl = document.getElementsByClassName('swiperList')[0];
+        const items = document.getElementsByClassName('item');
+        const pre = document.getElementById('pre');
+        const next = document.getElementById('next');
+        const activePoint = document.getElementsByClassName('active')[0];
+        let index = 0;
+        const w = 800;
+        const goIndex = function () {
+            oUl.style.left = - index * 800 + 'px';
+            activePoint.style.left = index * 20 + 'px';
+        }
+        const init = function () {//向前或向后,运动至最后一张图时,归位
+            oUl.addEventListener('transitionend', () => {
+                oUl.style.transition = 'none';
+                activePoint.style.transition = 'none';
+                goIndex();
+            })
+        }
+        const goNext = function () {
+            if (index <=4) {
+                oUl.style.transition = 'all 1s';
+                activePoint.style.transition = 'all .5s';
+                index++;
+                goIndex();
+            }
+            if (index === 5) {
+                index = 0;
+                init();
+            }
+        }
+        const goPre = function () {
+            if (index >= 0) {
+                oUl.style.transition = 'all 1s';
+                activePoint.style.transition = 'all .5s';
+                index--;
+                goIndex();
+            }
+            if (index ===-1) {
+                index = 4;
+                init();
+            }
+        }
+        function throttle(fn, delay = 1100) {   //用节流delay大于动画时间
+            let pre = 0;    //pre为0保证第一次生效
+            return function () {
+                let context = this;
+                let args = arguments;
+                let now = Date.now();
+                if (now - pre >= delay) {
+                    fn.apply(context, args)
+                    pre = now;
+                }
+            }
+        }
+        next.addEventListener('click', throttle(goNext), false);
+        pre.addEventListener('click',throttle(goPre),false);
+    </script>
+</body>
+
+</html>

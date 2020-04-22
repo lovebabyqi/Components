@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .banner {
+            position: relative;
+            overflow: hidden;
+            width: 538px;
+            height: 405px;
+            margin: 100px auto 0;
+            border: 3px solid blue;
+        }
+
+        .banner ul {
+            position: absolute;
+            list-style-type: none;
+            width: 1000%;
+        }
+
+        .banner ul:after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        .banner ul li {
+            float: left;
+        }
+
+        .banner ul li img {
+            display: block;
+        }
+
+        .banner .btnlist {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+            width: 36%;
+            margin: auto;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        .banner .btnlist span {
+            float: left;
+            width: 20px;
+            height: 20px;
+            margin: 0 6px;
+            background-color: rgba(255, 255, 255, .5);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .banner .btnlist span.on {
+            position: absolute;
+            background-color: #ff0036;
+        }
+
+        .banner .btn span {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            height: 70px;
+            margin: auto;
+            background-color: rgba(0, 0, 0, .5);
+            text-align: center;
+            line-height: 70px;
+            font-size: 30px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .banner .btn #next {
+            right: 0;
+        }
+    </style>
+
+</head>
+<body>
+<div class="banner">
+    <ul class="imglist">
+        <li><img src="images/6.jpg" alt=""/></li>
+        <li><img src="images/1.jpg" alt=""/></li>
+        <li><img src="images/2.jpg" alt=""/></li>
+        <li><img src="images/3.jpg" alt=""/></li>
+        <li><img src="images/4.jpg" alt=""/></li>
+        <li><img src="images/5.jpg" alt=""/></li>
+        <li><img src="images/6.jpg" alt=""/></li>
+        <li><img src="images/1.jpg" alt=""/></li>
+    </ul>
+    <div class="btnlist">
+        <span class="on"></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="btn">
+        <span id="pre">&lt;</span>
+        <span id="next">&gt;</span>
+    </div>
+</div>
+
+<script src="./animation.js"></script>
+<script>
+    var oUl = document.getElementsByClassName('imglist')[0];
+    var oNext = document.getElementById('next');//获取向右按钮
+    var oPre = document.getElementById('pre');
+    var len = oUl.children.length - 2;    //获取图片的length
+    var oBall = document.getElementsByClassName('on')[0];
+
+    var aSpan = document.querySelectorAll('.btnlist span:not(.on)');
+    var oBtnList = document.getElementsByClassName('btnlist')[0];
+    console.log(oBtnList);
+
+    var w = 538; //存储图片的宽度
+    oUl.style.left = -w + 'px';    /*设置oUl的初始位置*/
+
+    var index = 0;//记录点击的次数
+    /*  点击次数和oUl的位置关系
+    *   index   left
+    *   0       -538
+    *   1       -538*2
+    *   2       -538*3
+    *   ...
+    *   index   -538*(index+1)
+    *
+    *   点击次数和oBall的位置关系
+    *   index   left
+    *   0       0
+    *   1       32
+    *   2       32*2
+    *   3       32*3
+    *   ...
+    *   index   index*32
+    *
+    * */
+    //监听oNext的点击
+    oNext.addEventListener('click', next, false)
+
+    //监听oPre的点击
+    oPre.addEventListener('click', pre, false)
+
+
+    for (var i = 0; i < aSpan.length; i++) {
+        aSpan[i].index = i; //使用自定义属性 存储自身的索引
+    }
+    //监听oBtnList的点击
+    oBtnList.addEventListener('click', function (e) {
+        index = e.target.index; //修正index值 不然下一次点击next按钮时 会让轮播顺序错乱
+        if (e.target.nodeName === 'SPAN') {//如果点击的是灰色的span
+            animation(oUl, {     //让oUl运动
+                left: -w * (index + 1),
+            }, 0.3)
+
+            animation(oBall, { //让oBall运动
+                left: 32 * index,
+            }, 0.3)
+        }
+    }, false)
+
+    var now = new Date();   //记录当前的时间
+    function next() {
+        if (new Date() - now < 300) return;//如果最新的时间减去初始时间小于300ms  那就不执行函数
+        now = new Date(); //now变量存储最新的时间
+        index++;
+        animation(oUl, {  //让oUl向右运动
+            left: -w * (index + 1)
+        }, 0.3, function () {   //瞬间切换到第一个美女图片的位置
+            if (index == len) {
+                index = 0;
+                this.style.left = -w + 'px';
+            }
+        })
+
+        if (index == len) { //如果index是6  要让oBall 先淡出opacity 0  再淡入 opacity 1
+            animation(oBall, {   //淡出 opacity 1-->0
+                left: 200,       //终点left是200
+                opacity: 0,
+            }, 0.15, function () {
+                this.style.left = -40 + 'px'; //瞬间跳到-40
+                animation(this, {
+                    left: 0,
+                    opacity: 1,
+                }, 0.15)
+            })
+        } else {
+            animation(oBall, {  //让小圆点向右运动
+                left: 32 * index
+            }, 0.3)
+        }
+    }
+
+    function pre() {
+        if (new Date() - now < 300) return;//如果最新的时间减去初始时间小于300ms  那就不执行函数
+        now = new Date(); //now变量存储最新的时间
+        index--;
+        console.log(index);
+        animation(oUl, {       //让oUl向右运动
+            left: -w * (index + 1)
+        }, 0.3, function () {
+            if (index == -1) {
+                index = len - 1;
+                this.style.left = -len * w + 'px';
+            }
+        })
+
+        if (index == -1) {
+            animation(oBall, {   //让oBall运动
+                opacity: 0,
+                left: -40
+            }, 0.15, function () {
+                this.style.left = 200 + 'px'
+                animation(this, {
+                    left: 160,
+                    opacity: 1
+                }, 0.15)
+            })
+        } else {
+            animation(oBall, {
+                left: 32 * index
+            }, 0.3)
+        }
+    }
+</script>
+</body>
+</html>
