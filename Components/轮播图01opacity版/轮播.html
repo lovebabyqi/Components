@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重叠轮播</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .swiper{
+            margin:50px auto;
+            position:relative;
+            width: 800px;
+            height: 300px;
+        }
+        .swiperList{
+            position:relative;
+            width: 800px;
+            height: 300px;
+            list-style-type: none;
+        }
+        .item{
+            position:absolute;
+            transition:all .5s;
+            opacity:0.6;
+            width: 800px;
+            height: 300px;
+            font-size:50px;
+            text-align: center;
+            line-height:300px;
+            font-weight: bold;
+            color:#fff;
+            background-color: #333;
+        }
+        .item:nth-child(1){
+            background-color: rgb(46, 94, 66);
+        }
+        .item:nth-child(2){
+            background-color: rgb(28, 61, 30);
+        }
+        .item:nth-child(3){
+            background-color: rgb(42, 43, 22);
+        }
+        .item:nth-child(4){
+            background-color: rgb(32, 8, 37);
+        }
+        .item:nth-child(5){
+            background-color: rgb(122, 21, 72);
+        }
+        .item.active{
+            opacity: 1;
+            z-index:10;
+        }
+        .btn{
+            position:absolute;
+            top:50%;
+            transform:translateY(-50%);
+            width: 100px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            background-color: rgba(0, 0,0, 0.5);
+            color:#fff;
+            z-index:11;
+        }
+        #pre{
+            left:0;
+        }
+        #next{
+            right:0;
+        }
+        .pointList{
+            position:absolute;
+            bottom:10px;
+            left:50%;
+            transform: translateX(-50%);
+            list-style: none;
+            overflow: hidden;
+            z-index:15;
+        }
+        .point{
+            width: 8px;
+            height: 8px;
+            margin:5px;
+            border-radius: 50%;;
+            background-color: rgba(0,0,0,0.5);
+            float:left;
+        }
+        .point.active{
+            background-color: red;
+        }
+        img{
+            width:800px;
+            height:300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper">
+        <ul class="swiperList">
+            <li class="item active"><img src="./images/01.jpg"></li>
+            <li class="item"><img src="./images/02.jpg"></li>
+            <li class="item"><img src="./images/03.jpg"></li>
+            <li class="item"><img src="./images/04.jpg"></li>
+            <li class="item"><img src="./images/05.jpg"></li>
+        </ul>
+        <button type="button" id='pre' class='btn'><</button>
+        <button type="button" id='next' class='btn'>></button>
+        <ul class='pointList'>
+            <li class='point active' data-index='0'></li>
+            <li class='point' data-index='1'></li>
+            <li class='point' data-index='2'></li>
+            <li class='point' data-index='3'></li>
+            <li class='point' data-index='4'></li>
+        </ul>
+    </div>
+    <script>
+        const items = document.getElementsByClassName('item');
+        const points = document.getElementsByClassName('point');
+        const pointParent = document.getElementsByClassName('pointList')[0];
+        const pre = document.getElementById('pre');
+        const next = document.getElementById('next');
+        let index = 0;//记录轮播图第几张图片active,同时记录小红点active
+        const clearActive = function(){
+            for(let i=0;i<items.length;i++){
+                items[i].className = 'item';
+                points[i].className = 'point';
+            }
+        }
+        const goIndex = function(){
+            clearActive();
+            items[index].className = 'item active';
+            points[index].className = 'point active';
+        }
+        const goNext = function(){
+            index<4?index++:index=0;
+            goIndex();
+        }
+        const goPre = function(){
+            index>0?index--:index=4;
+            goIndex();
+        }
+        const pointClick = function(e){
+            if(e.target.dataset.index){ //事件委托,必须点到point才触发
+                index = +e.target.dataset.index;
+                goIndex();
+            }
+        }
+        pre.addEventListener('click',goPre,false);
+        next.addEventListener('click',goNext,false);
+        pointParent.addEventListener('click',pointClick,false)
+        setInterval(()=>{
+            goNext()
+        },1500)
+    </script>
+</body>
+</html>
