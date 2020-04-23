@@ -22,11 +22,14 @@
 ```
 
 dom:dom     要运动的dom元素
-target:{}   根据变化后的样式,    left    right等
+
+target:{}   根据样式变化差异运动,    left    right等
+
 time:time   动画时间
+
 callBack    回调    动画结束执行的回调 可选
 
-## Nav导航 hover弹框动画,类似二级三级菜单
+## 3.Nav导航 hover弹框动画,类似二级三级菜单
 
 **CSS3 anmiation**
 
