@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hover弹出框</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #header {
+            margin: 0 50px;
+            height: 70px;
+            line-height: 70px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            display: flex;
+        }
+
+        .header-left {
+            width: 150px;
+        }
+
+        .header-middle {
+            width: 150px;
+        }
+
+        .header-right {
+            width: 40%;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        /*二级导航*/
+        .header-left:hover .left-list {
+            display: block;
+            width: 150px;
+        }
+
+        .left-list {
+            display: none;
+            animation-name: pannel-center-top;
+            animation-duration: .3s;
+        }
+
+        .left-list a {
+            display: block;
+            width: 150px;
+            line-height: 70px;
+            background-color: #ddd;
+        }
+
+        .left-list a:hover {
+            background-color: #eee;
+        }
+
+        /*三级导航*/
+        .header-middle:hover .middle-list {
+            display: block;
+        }
+
+        .middle-list {
+            list-style-type: none;
+            display: none;
+            animation-name: pannel-center-top;
+            animation-duration: .3s;
+            background-color: #ddd;
+        }
+
+        .middle-list a {
+            display: block;
+            width: 150px;
+            line-height: 60px;
+
+        }
+
+        .middle-list a:hover {
+            background-color: #eee;
+        }
+
+        .middle-list li {
+            position: relative;
+        }
+
+        .second-list {
+            animation-name: pannel-left-top;
+            animation-duration: .3s;
+            display: none;
+            position: absolute;
+            left: 150px;
+            top: 0px;
+            background-color: rgba(238, 238, 238, 0.808);
+        }
+
+        .middle-list li:hover .second-list {
+            display: block;
+        }
+
+        .second-list a:hover {
+            background-color: #fff;
+        }
+
+        /*右侧*/
+        .right-list {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            line-height: 70px;
+        }
+
+        .item {
+            position: relative;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .item:hover {
+            color: rgb(26, 158, 211);
+        }
+
+
+        /* border position */
+        .bp {
+            position: absolute;
+            top: 70px;
+            border-radius: 4px;
+
+        }
+
+        /* 左下弹框 */
+        .item:nth-child(1):hover .box1 {
+            display: block;
+        }
+
+        .box1 {
+            display: none;
+            min-width: 150px;
+            background-color: rgba(0, 0, 0, .7);
+            animation-name: pannel-left-top;
+            animation-duration: .3s;
+            z-index: 10;
+        }
+
+        @keyframes pannel-left-top {
+            0% {
+                opacity: .2;
+                transform: scale(.3);
+                transform-origin: left top;
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                transform-origin: left top;
+            }
+        }
+
+        /* 下方弹框 */
+        .item:nth-child(2):hover .box2 {
+            display: block;
+        }
+
+        .box2 {
+            display: none;
+            min-width: 180px;
+            background-color: rgba(0, 0, 0, .7);
+            animation-name: pannel-center-top;
+            animation-duration: .3s;
+            z-index: 10;
+        }
+
+        .box2 {
+            left: -75px;
+        }
+
+        @keyframes pannel-center-top {
+            0% {
+                opacity: .2;
+                transform: scale(.3);
+                transform-origin: center top;
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                transform-origin: center top;
+            }
+        }
+
+        /* 右下弹框 */
+        .item:nth-child(3):hover .box3 {
+            display: block;
+        }
+
+        .box3 {
+            left: -148px;
+            display: none;
+            min-width: 180px;
+            background-color: rgba(0, 0, 0, .7);
+            animation-duration: .2s;
+            animation-name: pannel-right-top;
+            z-index: 10;
+        }
+
+        @keyframes pannel-right-top {
+            0% {
+                opacity: .2;
+                transform: scale(.3);
+                transform-origin: right top;
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                transform-origin: right top;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id='header'>
+        <div class="header-left nav-item">二级导航
+            <div class="left-list">
+                <a href="#">二级1</a>
+                <a href="#">二级2</a>
+                <a href="#">二级3</a>
+                <a href="#">二级4</a>
+                <a href="#">二级5</a>
+            </div>
+        </div>
+        <div class="header-middle nav-item">
+            三级导航
+
+            <ul class='middle-list'>
+                <li>
+                    <a href="#">二级1</a>
+                    <div class="second-list">
+                        <a href="#">二级1--01</a>
+                        <a href="#">二级1--02</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">二级2</a>
+                    <div class="second-list">
+                        <a href="#">二级2--01</a>
+                        <a href="#">二级2--02</a>
+                        <a href="#">二级2--03</a>
+                        <a href="#">二级2--04</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">二级3</a>
+                    <div class="second-list">
+                        <a href="#">二级3--01</a>
+                        <a href="#">二级3--02</a>
+                        <a href="#">二级3--03</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <div class="header-right">
+            <ul class='right-list'>
+                <li class='item'>左下
+                    <div class="box1 bp">左边开始</div>
+                </li>
+                <li class='item'>正下
+                    <div class="box2 bp">中间开始</div>
+                </li>
+                <li class='item'>右下
+                    <div class="box3 bp">右边开始</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
