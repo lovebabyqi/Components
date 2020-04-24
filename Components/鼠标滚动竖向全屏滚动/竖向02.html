@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兼容版</title>
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+        }
+
+        body,
+        ul,
+        li,
+        a,
+        p,
+        div {
+            padding: 0px;
+            margin: 0px;
+            font-size: 14px;
+        }
+
+        #wrap {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #main {
+            height: 2944px;
+            top: 0;
+            position: relative;
+            transition: all .5s;
+        }
+
+        .page {
+            width: 100%;
+            margin: 0;
+            font-size: 50px;
+            line-height: 350px;
+            text-align: center;
+            font-weight:bold;
+        }
+
+        #page1 {
+            background: #E4E6CE;
+        }
+
+        #page2 {
+            background: #6CE26C;
+        }
+
+        #page3 {
+            background: #BF4938;
+        }
+
+        #page4 {
+            background: #2932E1;
+        }
+        #page5 {
+            background: rgb(82, 141, 141);
+        }
+        #page6 {
+            background: rgb(156, 84, 62);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrap">
+        <div id="main">
+            <div id="page1" class="page">0</div>
+            <div id="page2" class="page">1</div>
+            <div id="page3" class="page">2</div>
+            <div id="page4" class="page">3</div>
+            <div id="page5" class="page">4</div>
+            <div id="page6" class="page">5</div>
+        </div>
+    </div>
+    <!-- <script src="https://cdn.bootcss.com/jquery/3.5.0/jquery.min.js"></script> -->
+    <script type="text/javascript">
+        var wrap = document.getElementById("wrap");
+        var main = document.getElementById("main");
+        var hei = document.body.clientHeight;
+        wrap.style.height = hei + "px";
+        var obj = document.getElementsByTagName("div");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].className == 'page') {
+                obj[i].style.height = hei + "px";
+            }
+        }
+        //如果不加时间控制，滚动会过度灵敏，一次翻好几屏
+        var startTime = 0, //翻屏起始时间  
+            endTime = 0,
+            now = 0;
+        //浏览器兼容      
+        if ((navigator.userAgent.toLowerCase().indexOf("firefox") != -1)) {
+            document.addEventListener("DOMMouseScroll", scrollFun, false);
+        }
+        else if (document.addEventListener) {
+            document.addEventListener("mousewheel", scrollFun, false);
+        }
+        else if (document.attachEvent) {
+            document.attachEvent("onmousewheel", scrollFun);
+        }
+        else {
+            document.onmousewheel = scrollFun;
+        }
+
+        //滚动事件处理函数
+        function scrollFun(event) {
+            startTime = new Date().getTime();
+            var delta = event.detail || (-event.wheelDelta);
+            //mousewheel事件中的 “event.wheelDelta” 属性值：返回的如果是正值说明滚轮是向上滚动
+            //DOMMouseScroll事件中的 “event.detail” 属性值：返回的如果是负值说明滚轮是向上滚动
+            if ((endTime - startTime) < -500) {
+                if (delta > 0 && parseInt(main.offsetTop) > -(hei * 5)) {
+                    //向下滚动
+                    now = now - hei;
+                    toPage(now);
+                }
+                if (delta < 0 && parseInt(main.offsetTop) < 0) {
+                    //向上滚动
+                    now = now + hei;
+                    toPage(now);
+                }
+                endTime = new Date().getTime();
+            }
+            else {
+                event.preventDefault();
+            }
+        }
+        function toPage(now) {
+            // $("#main").animate({ top: (now + 'px') }, 1000);     //jquery实现动画效果
+            setTimeout("main.style.top = now + 'px'",0);    // javascript 实现动画效果
+        }   
+    </script>
+</body>
+
+</html>
