@@ -1,0 +1,41 @@
+:root{
+    --fade-time: 0.5s;
+}
+body{
+    margin:20px;
+    padding:0;
+    background-color: #333;
+}
+.container{
+    max-width:760px;
+    margin:0 auto;
+    background-color: rgba(0, 0, 0, .7);
+}
+/*透明度切换时,会闪出背景色,白色刺眼,使用柔和背景*/
+.main-img img,
+.imgs img{
+    width:100%;
+    border:#fff solid 3px;
+}
+/*grid网格布局*/
+.imgs{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 3px;
+}
+/*动画*/
+.fadeIn{
+    opacity: 0.5;
+    animation: fade-in var(--fade-time) ease-in 1 forwards;
+}
+@keyframes fade-in {
+    to{
+        opacity: 1;
+    }
+}
+/*媒体查询,页面宽度缩小至maxWidth时变为2列布局*/
+@media(max-width: 600px) {
+    .imgs{
+        grid-template-columns: repeat(2,1fr);
+    }
+}
