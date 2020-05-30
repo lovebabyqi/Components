@@ -1,0 +1,111 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;
+}
+body{
+    width: 100vw;
+    height: 100vh;
+}
+header{
+    width: 100vw;
+    height:100vh;
+    background-image:url(./001.jpg);
+    background-size: cover;
+}
+nav{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    display:flex;
+    align-items: center;;
+    justify-content: space-between;
+    padding:0 5vw;
+    height:60px;
+    background-color: rgba(65,81,101,.9);
+}
+.logo{
+    font-size: 24px;
+    font-weight: 600;
+    color:#dadbdd;
+}
+.nav_menu{
+    list-style:none;
+    display:flex;
+    flex:1;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width:550px;
+}
+.nav_menu li{
+    color:#dadbdd;
+    font-weight: 600;
+}
+.burger div{
+    width: 25px;
+    height: 3px;
+    background-color: #dadbdd;
+    margin:4px;
+}
+.burger{
+    display:none;
+}
+@media screen and (max-width:768px){
+    .nav_menu{
+        position: absolute;
+        top:60px;
+        right:0;
+        bottom:0;
+
+        width: 50vw;
+        height:calc(100vh - 60px);
+
+        background-color: rgba(65,81,101,.9);
+        flex-direction: column;
+        align-items: center;
+        justify-content:flex-start;
+        transform:translateX(100%);
+        transition:.3s ease-in-out;
+    }
+    .nav_menu.open{
+        transform:translateX(0);
+    }
+    .nav_menu li{
+        margin:3vh;
+        transform:translateX(50%);
+        opacity:0;
+    }
+    .burger{
+        display:block;
+    }
+    .burger div{
+        transition:all .3s ease-in-out;
+    }
+    .burger.active{
+        transition: all .3s ease-in-out .3s;
+    }
+    .burger.active .top_line{
+        transform:rotate(45deg) translate(4px,6px);
+    }
+    .burger.active .bottom_line{
+        transform:rotate(-45deg) translate(4px,-6px);
+    }
+    .burger.active .middle_line{
+        transform:translateX(100%);
+        opacity:0;
+        transition:.3s ease-in-out;
+    }
+
+    @keyframes slideIn {
+        from{
+            opacity:0;
+            transform:translateX(20px);
+            
+        }to{
+            opacity:1;
+            transform:translateX(0);
+        }
+    }
+}
